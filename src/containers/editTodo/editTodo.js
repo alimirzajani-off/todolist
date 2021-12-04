@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { fetchtodolist, sendTodo } from "../../action";
+import { fetchtodolist, setUpdateList } from "../../action";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
@@ -33,8 +33,10 @@ const EditTodo = (props) => {
   };
 
   useEffect(() => {
-    props.fetchtodolist();
     setTodoList();
+
+    // setTodoList();
+    // setDetail();
   }, [open]);
 
   const setTodoList = () => {
@@ -42,29 +44,26 @@ const EditTodo = (props) => {
     setTaskList(props.TodoList);
   };
 
-  const controlProps = (item) => ({
+  const controlProps = (level, item) => ({
     checked: TaskLevel === item,
     onChange: handleTaskLevel,
-    value: item,
+    value: level ? item : level,
   });
 
-  const handleSendTask = () => {
+  const setDetail = (id, title, description, gift, level) => {
     const Task = {};
-    Task.title = TaskTitle;
-    Task.description = TaskDescription;
-    Task.gift = TaskGift;
-    Task.level = TaskLevel;
+    Task.title = TaskTitle || title;
+    Task.description = TaskDescription || description;
+    Task.gift = TaskGift || gift;
+    Task.level = TaskLevel || level;
     Task.status = false;
-    Task.id = uuidv4();
-    TaskList.push(Task);
-    props.sendTodo(TaskList);
+    Task.id = id;
+    props.setUpdateList(id, TaskList, Task);
     setOpen(false);
   };
-
   const showDetail = () => {
-    return props.TodoList.map((item) => {
-      if (item.id && item.id === props.id) {
-        setTaskLevel(item.level);
+    return TaskList.map((item) => {
+      if (item.id === props.id) {
         return (
           <div>
             <Modal
@@ -73,37 +72,67 @@ const EditTodo = (props) => {
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
             >
-              <Box component="form" sx={style} noValidate autoComplete="off">
+              <Box
+                component="form"
+                sx={style}
+                noValidate
+                autoComplete="off"
+                onSubmit={(e) => e.preventDefault()}
+              >
                 <div className="add-form-text">
                   <TextField
-                    label={item.title ? item.title : "Task Title"}
+                    label={"Task Title"}
                     variant="standard"
+                    value={TaskTitle ? TaskTitle : item.title}
                     onChange={(e) => setTaskTitle(e.target.value)}
                   />
                   <TextField
-                    label={
-                      item.description ? item.description : "Task Description"
-                    }
+                    label={"Task Description"}
                     variant="standard"
+                    value={TaskDescription ? TaskDescription : item.description}
                     onChange={(e) => setTaskDescription(e.target.value)}
                   />
                   <TextField
-                    label={
-                      item.gift ? item.gift : "Gifts and KPI for this task ;)"
-                    }
+                    label={"Gifts and KPI for this task ;)"}
                     variant="standard"
+                    value={TaskGift ? TaskGift : item.gift}
                     onChange={(e) => setTaskGift(e.target.value)}
                   />
                 </div>
                 <RadioGroup className="add-form-radio">
-                  <Radio {...controlProps("low")} color="secondary" />
-                  <Radio {...controlProps("medium")} color="success" />
-                  <Radio {...controlProps("high")} color="primary" />
+                  <Radio
+                    {...controlProps(item.level, "low")}
+                    color="secondary"
+                  />
+                  <Radio
+                    {...controlProps(item.level, "medium")}
+                    color="success"
+                  />
+                  <Radio
+                    {...controlProps(item.level, "high")}
+                    color="primary"
+                  />
                 </RadioGroup>
                 <div className="add-form-submit-btn">
-                  <Button variant="contained" onClick={() => handleSendTask()}>
+                  {/* <Button
+                    variant="contained"
+                    onClick={() => setDetail(item.id)}
+                  >
                     Add To Tasks
-                  </Button>
+                  </Button> */}
+                  <button
+                    onClick={(e) =>
+                      setDetail(
+                        item.id,
+                        item.title,
+                        item.description,
+                        item.gift,
+                        item.level
+                      )
+                    }
+                  >
+                    update
+                  </button>
                 </div>
               </Box>
             </Modal>
@@ -112,11 +141,21 @@ const EditTodo = (props) => {
       }
     });
   };
+  // const setDetail = () => {
+  //   let realDetail = props.TodoList.filter((item) => {
+  //     return item.id == props.id;
+  //   });
+  //   setTaskList(realDetail);
+  // };
 
   return (
     <>
-      <Button onClick={handleOpen}>{props.btnText}</Button>
-      {showDetail()}
+      {TaskList ? (
+        <>
+          <Button onClick={handleOpen}>{props.btnText}</Button>
+          {showDetail()}
+        </>
+      ) : null}
     </>
   );
 };
@@ -125,4 +164,6 @@ const mapStateToProps = (state) => {
   return { TodoList: state.ToDoList };
 };
 
-export default connect(mapStateToProps, { fetchtodolist, sendTodo })(EditTodo);
+export default connect(mapStateToProps, { fetchtodolist, setUpdateList })(
+  EditTodo
+);

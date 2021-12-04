@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { fetchtodolist, sendTodo } from "../../action";
+import { fetchtodolist, setCompleted } from "../../action";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import "./todoDetail.sass";
+import EditTodo from "../editTodo/editTodo";
 
 const style = {
   position: "absolute",
@@ -26,9 +27,7 @@ const TodoDetail = (props) => {
 
   useEffect(() => {
     props.fetchtodolist();
-    setOpen(props.open);
-  }, []);
-  //   console.log(props.ToDoList);
+  }, [open]);
 
   const handlestatusbtn = (status) => {
     if (status == "low") {
@@ -57,7 +56,6 @@ const TodoDetail = (props) => {
 
   const showDetail = () => {
     return props.TodoList.map((item) => {
-      console.log(item.id);
       if (item.id && item.id === props.id) {
         return (
           <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -73,14 +71,16 @@ const TodoDetail = (props) => {
               {item.description}
               <div>
                 <Button color="primary" size="small">
-                  Edit Task
+                  Delete Task
                 </Button>
-                <Button color="success" size="small">
+                <Button
+                  color="success"
+                  size="small"
+                  onClick={(e) => setCompleted(item.id, props.TodoList)}
+                >
                   Done Task
                 </Button>
-                <Button color="error" size="small">
-                  Edit Task
-                </Button>
+                <EditTodo btnText={"Edit Task"} id={item.id} />
               </div>
             </div>
           </Typography>
@@ -91,7 +91,7 @@ const TodoDetail = (props) => {
 
   return (
     <div>
-      <Button onClick={handleOpen}></Button>
+      <div onClick={handleOpen}>{props.btnText}</div>
       <Modal
         open={open}
         onClose={handleClose}
@@ -108,4 +108,6 @@ const mapStateToProps = (state) => {
   return { TodoList: state.ToDoList };
 };
 
-export default connect(mapStateToProps, { fetchtodolist })(TodoDetail);
+export default connect(mapStateToProps, { fetchtodolist, setCompleted })(
+  TodoDetail
+);

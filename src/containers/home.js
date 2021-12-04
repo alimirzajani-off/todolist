@@ -10,8 +10,6 @@ const Home = (props) => {
     props.fetchtodolist();
   }, []);
 
-  console.log(props.TodoList);
-
   const handleStart = () => {
     if (props.TodoList.length == 0) {
       return (
