@@ -12,3 +12,5 @@
  delete Task\
  edit Task\
  checked Task when Task done and see list of task is completed
+ 
+ ### this TODO LIST use localstorage because of that TASKS save in your browser.
