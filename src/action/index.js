@@ -1,12 +1,12 @@
-import { getTodo, setTodo } from "../service";
+import { DELETE, GET, SET } from "../service";
 
 export const fetchtodolist = () => async (dispatch) => {
-  const response = await getTodo().then((res) => res);
+  const response = await GET().then((res) => res);
   dispatch({ type: "FETCH_TODO_LIST", payload: response });
 };
 
 export const sendTodo = (Task) => async (dispatch) => {
-  await setTodo(Task).then(() => fetchtodolist());
+  await SET(Task).then(() => fetchtodolist());
 };
 
 export const setCompleted = (id, TaskList) => {
@@ -16,7 +16,8 @@ export const setCompleted = (id, TaskList) => {
       item.status = true;
     }
   });
-  setTodo(TodoList);
+  console.log("hi");
+  SET(TodoList);
 };
 
 export const setUpdateList = (id, TaskList, editData) => async (dispatch) => {
@@ -31,5 +32,10 @@ export const setUpdateList = (id, TaskList, editData) => async (dispatch) => {
       item.id = editData.id;
     }
   });
-  await setTodo(TodoList).then(() => fetchtodolist());
+  await SET(TodoList).then(() => fetchtodolist());
+};
+
+export const deleteTodo = (Task, index) => {
+  DELETE(Task, index).then(() => fetchtodolist());
+  console.log(Task, index);
 };

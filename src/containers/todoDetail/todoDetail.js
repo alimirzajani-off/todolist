@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { fetchtodolist, setCompleted } from "../../action";
+import {
+  fetchtodolist,
+  setCompleted,
+  removeTodo,
+  deleteTodo,
+} from "../../action";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -55,7 +60,7 @@ const TodoDetail = (props) => {
   };
 
   const showDetail = () => {
-    return props.TodoList.map((item) => {
+    return props.TodoList.map((item, index) => {
       if (item.id && item.id === props.id) {
         return (
           <Typography id="modal-modal-title" variant="h6" component="h2">
@@ -70,7 +75,11 @@ const TodoDetail = (props) => {
             <div className="detail-body">
               {item.description}
               <div>
-                <Button color="primary" size="small">
+                <Button
+                  color="success"
+                  size="small"
+                  onClick={(e) => deleteTodo(props.TodoList, index)}
+                >
                   Delete Task
                 </Button>
                 <Button
@@ -98,7 +107,9 @@ const TodoDetail = (props) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>{showDetail()}</Box>
+        <Box component="form" sx={style} onSubmit={(e) => e.preventDefault()}>
+          {showDetail()}
+        </Box>
       </Modal>
     </div>
   );
@@ -108,6 +119,8 @@ const mapStateToProps = (state) => {
   return { TodoList: state.ToDoList };
 };
 
-export default connect(mapStateToProps, { fetchtodolist, setCompleted })(
-  TodoDetail
-);
+export default connect(mapStateToProps, {
+  fetchtodolist,
+  setCompleted,
+  deleteTodo,
+})(TodoDetail);
