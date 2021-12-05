@@ -60,12 +60,7 @@ const CompletedList = (props) => {
     return props.TodoList.map((item) => {
       if (item.status == true) {
         return (
-          <Typography
-            id="modal-modal-title"
-            variant="h6"
-            component="h2"
-            key={item.id}
-          >
+          <Typography id="modal-modal-title" key={item.id}>
             <div>
               <div className="todo-item">
                 <div

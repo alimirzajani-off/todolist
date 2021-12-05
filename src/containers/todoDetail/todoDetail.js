@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import {
-  fetchtodolist,
-  setCompleted,
-  removeTodo,
-  deleteTodo,
-} from "../../action";
+import { fetchtodolist, setCompleted, deleteTodo } from "../../action";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -73,7 +68,7 @@ const TodoDetail = (props) => {
     return props.TodoList.map((item, index) => {
       if (item.id && item.id === props.id) {
         return (
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography id="modal-modal-title">
             <div className="detail-title">
               <div className="detail-title-level">
                 {handlestatusbtn(item.level)}
@@ -86,7 +81,7 @@ const TodoDetail = (props) => {
               {item.description}
               <div>
                 <Button
-                  color="success"
+                  color="error"
                   size="small"
                   onClick={(e) => handleDelete(props.TodoList, index)}
                 >

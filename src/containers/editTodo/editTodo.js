@@ -4,8 +4,7 @@ import { fetchtodolist, setUpdateList } from "../../action";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { Radio, RadioGroup, TextField } from "@mui/material";
-import { v4 as uuidv4 } from "uuid";
+import { FormControlLabel, Radio, RadioGroup, TextField } from "@mui/material";
 import "./editTodo.sass";
 
 const style = {
@@ -97,17 +96,20 @@ const EditTodo = (props) => {
                   />
                 </div>
                 <RadioGroup className="add-form-radio">
-                  <Radio
-                    {...controlProps(item.level, "low")}
-                    color="secondary"
+                  <FormControlLabel
+                    value="low"
+                    control={<Radio {...controlProps(item.level, "low")} />}
+                    label="LOW"
                   />
-                  <Radio
-                    {...controlProps(item.level, "medium")}
-                    color="success"
+                  <FormControlLabel
+                    value="medium"
+                    control={<Radio {...controlProps(item.level, "medium")} />}
+                    label="MEDIUM"
                   />
-                  <Radio
-                    {...controlProps(item.level, "high")}
-                    color="primary"
+                  <FormControlLabel
+                    value="high"
+                    control={<Radio {...controlProps(item.level, "high")} />}
+                    label="HIGH"
                   />
                 </RadioGroup>
                 <div className="add-form-submit-btn">
@@ -133,12 +135,6 @@ const EditTodo = (props) => {
       }
     });
   };
-  // const setDetail = () => {
-  //   let realDetail = props.TodoList.filter((item) => {
-  //     return item.id == props.id;
-  //   });
-  //   setTaskList(realDetail);
-  // };
 
   return (
     <>

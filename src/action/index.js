@@ -16,7 +16,6 @@ export const setCompleted = (id, TaskList) => {
       item.status = true;
     }
   });
-  console.log("hi");
   SET(TodoList);
 };
 
@@ -37,5 +36,4 @@ export const setUpdateList = (id, TaskList, editData) => async (dispatch) => {
 
 export const deleteTodo = (Task, index) => {
   DELETE(Task, index).then(() => fetchtodolist());
-  console.log(Task, index);
 };

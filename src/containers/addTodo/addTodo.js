@@ -4,7 +4,7 @@ import { fetchtodolist, sendTodo } from "../../action";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { Radio, RadioGroup, TextField } from "@mui/material";
+import { FormControlLabel, Radio, RadioGroup, TextField } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
 import "./addTodo.sass";
 
@@ -58,6 +58,9 @@ const AddTodo = (props) => {
     TaskList.push(Task);
     props.sendTodo(TaskList);
     setOpen(false);
+    setTaskTitle("");
+    setTaskDescription("");
+    setTaskGift("");
   };
 
   return (
@@ -88,9 +91,21 @@ const AddTodo = (props) => {
             />
           </div>
           <RadioGroup className="add-form-radio">
-            <Radio {...controlProps("low")} color="secondary" />
-            <Radio {...controlProps("medium")} color="success" />
-            <Radio {...controlProps("high")} color="primary" />
+            <FormControlLabel
+              value="low"
+              control={<Radio {...controlProps("low")} />}
+              label="LOW"
+            />
+            <FormControlLabel
+              value="medium"
+              control={<Radio {...controlProps("medium")} />}
+              label="MEDIUM"
+            />
+            <FormControlLabel
+              value="high"
+              control={<Radio {...controlProps("high")} />}
+              label="HIGH"
+            />
           </RadioGroup>
           <div className="add-form-submit-btn">
             <Button variant="contained" onClick={() => handleSendTask()}>

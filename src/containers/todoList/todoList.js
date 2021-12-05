@@ -9,7 +9,6 @@ import EditTodo from "../editTodo/editTodo";
 import CompletedList from "./completedList/completedList";
 
 const TodoList = (props) => {
-  const [open, setopen] = useState(false);
   const [Id, setId] = useState();
   useEffect(() => {
     props.fetchtodolist();
@@ -61,10 +60,7 @@ const TodoList = (props) => {
               <TodoDetail
                 id={Id}
                 btnText={
-                  <div
-                    className="todo-item-body todo-item-header"
-                    // onClick={() => setopen(true)}
-                  >
+                  <div className="todo-item-body todo-item-header">
                     <div className="todo-item-title">{item.title}</div>
                     <div className="todo-item-status">
                       {handlestatusbtn(item.level)}
@@ -82,7 +78,7 @@ const TodoList = (props) => {
                 </div>
                 <div>
                   <Button
-                    color="secondary"
+                    color="success"
                     size="small"
                     onClick={(e) => setCompleted(item.id, props.TodoList)}
                   >
@@ -91,7 +87,6 @@ const TodoList = (props) => {
                   <EditTodo btnText={"Edit Task"} id={Id} />
                 </div>
               </div>
-              {/* <div className="todo-item-title"></div> */}
             </div>
           </div>
         );
