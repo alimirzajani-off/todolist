@@ -59,6 +59,16 @@ const TodoDetail = (props) => {
     }
   };
 
+  const handleDelete = (todo, index) => {
+    deleteTodo(todo, index);
+    setOpen(false);
+  };
+
+  const handleCompleted = (id, todo) => {
+    setCompleted(id, todo);
+    setOpen(false);
+  };
+
   const showDetail = () => {
     return props.TodoList.map((item, index) => {
       if (item.id && item.id === props.id) {
@@ -78,14 +88,14 @@ const TodoDetail = (props) => {
                 <Button
                   color="success"
                   size="small"
-                  onClick={(e) => deleteTodo(props.TodoList, index)}
+                  onClick={(e) => handleDelete(props.TodoList, index)}
                 >
                   Delete Task
                 </Button>
                 <Button
                   color="success"
                   size="small"
-                  onClick={(e) => setCompleted(item.id, props.TodoList)}
+                  onClick={(e) => handleCompleted(item.id, props.TodoList)}
                 >
                   Done Task
                 </Button>

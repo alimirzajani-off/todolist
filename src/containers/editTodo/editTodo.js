@@ -34,9 +34,6 @@ const EditTodo = (props) => {
 
   useEffect(() => {
     setTodoList();
-
-    // setTodoList();
-    // setDetail();
   }, [open]);
 
   const setTodoList = () => {
@@ -114,13 +111,8 @@ const EditTodo = (props) => {
                   />
                 </RadioGroup>
                 <div className="add-form-submit-btn">
-                  {/* <Button
+                  <Button
                     variant="contained"
-                    onClick={() => setDetail(item.id)}
-                  >
-                    Add To Tasks
-                  </Button> */}
-                  <button
                     onClick={(e) =>
                       setDetail(
                         item.id,
@@ -131,8 +123,8 @@ const EditTodo = (props) => {
                       )
                     }
                   >
-                    update
-                  </button>
+                    Edit Task
+                  </Button>
                 </div>
               </Box>
             </Modal>

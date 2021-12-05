@@ -4,6 +4,7 @@ import { fetchtodolist } from "../action";
 import AddTodo from "./addTodo/addTodo";
 import TodoList from "./todoList/todoList";
 import "./home.sass";
+import ErrorBoundary from "../ErrorBoundary/ErrorBoundary";
 
 const Home = (props) => {
   useEffect(() => {
@@ -19,7 +20,11 @@ const Home = (props) => {
         </div>
       );
     } else {
-      return <TodoList />;
+      return (
+        <ErrorBoundary>
+          <TodoList />;
+        </ErrorBoundary>
+      );
     }
   };
 

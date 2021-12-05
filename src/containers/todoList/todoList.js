@@ -15,6 +15,10 @@ const TodoList = (props) => {
     props.fetchtodolist();
   }, []);
 
+  if (!props.TodoList) {
+    throw new Error("add new task");
+  }
+
   const addBtn = () => {
     return (
       <div className="add-btn">
@@ -68,7 +72,6 @@ const TodoList = (props) => {
                   </div>
                 }
               />
-
               <div className="todo-item-body todo-item-footer">
                 <div className="todo-item-description">
                   {item.description ? (
