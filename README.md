@@ -5,7 +5,7 @@ in this project use:\
 3.localstorage (for crud)\
 4.material ul for css\
 5.sass\
-6.error boundary\
+6.error boundary
  
  ## feature :
  add Task\
