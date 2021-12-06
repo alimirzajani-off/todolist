@@ -7,7 +7,7 @@ in this project use:\
 5.sass\
 6.error boundary
  
- ## features :
+ ## Features :
  add Task\
  see list of Task\
  delete Task\
