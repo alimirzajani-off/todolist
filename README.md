@@ -1,10 +1,11 @@
 # TODO LIST
- in this project use:
- 1.react\
- 2.redux & redux-thunk (for state management)\
- 3.localstorage (for crud)\
- 4.material ul for css\
- 5.sass
+in this project use:\
+1.react\
+2.redux & redux-thunk (for state management)\
+3.localstorage (for crud)\
+4.material ul for css\
+5.sass\
+6.error boundary\
  
  ## feature :
  add Task\
