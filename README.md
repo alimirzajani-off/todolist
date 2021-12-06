@@ -6,7 +6,7 @@
  4.material ul for css\
  5.sass
  
- ## in this project you can :
+ ## feature :
  add Task\
  see list of Task\
  delete Task\
