@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { connect } from "react-redux";
-import { fetchtodolist, sendTodo } from "../../action";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
-import { FormControlLabel, Radio, RadioGroup, TextField } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
+import { Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
+import Box from "@mui/material/Box";
+import Modal from "@mui/material/Modal";
+import Button from "@mui/material/Button";
+import { fetchtodolist, sendTodo } from "../../action";
+import { FormControlLabel, Radio, RadioGroup, TextField } from "@mui/material";
 import "./addTodo.sass";
 
 const style = {
@@ -19,8 +20,39 @@ const style = {
   p: 4,
 };
 
+const validate = (values) => {
+  const errors = {};
+  if (!values.title) {
+    errors.title = "please input title";
+  }
+  if (!values.description) {
+    errors.description = "please input description";
+  }
+  if (!values.gift) {
+    errors.gift = "please input gift";
+  }
+  return errors;
+};
+
+const renderField = ({
+  input,
+  label,
+  type,
+  meta: { touched, error, warning },
+}) => (
+  <div>
+    <div>
+      <TextField {...input} type={type} label={label} variant="standard" />
+      {touched &&
+        ((error && <span>{error}</span>) ||
+          (warning && <span>{warning}</span>))}
+    </div>
+  </div>
+);
+
 const AddTodo = (props) => {
   const [open, setOpen] = useState(false);
+  const [hasError, sethasError] = useState(false);
   const [TaskList, setTaskList] = useState();
   const [TaskTitle, setTaskTitle] = useState("");
   const [TaskDescription, setTaskDescription] = useState("");
@@ -58,10 +90,13 @@ const AddTodo = (props) => {
     TaskList.push(Task);
     props.sendTodo(TaskList);
     setOpen(false);
+    sethasError(false);
     setTaskTitle("");
-    setTaskDescription("");
     setTaskGift("");
+    setTaskDescription("");
   };
+
+  const { handleSubmit, pristine, reset, submitting } = props;
 
   return (
     <div>
@@ -74,41 +109,55 @@ const AddTodo = (props) => {
       >
         <Box component="form" sx={style} noValidate autoComplete="off">
           <div className="add-form-text">
-            <TextField
-              label="Task Title"
-              variant="standard"
-              onChange={(e) => setTaskTitle(e.target.value)}
-            />
-            <TextField
-              label="Description"
-              variant="standard"
-              onChange={(e) => setTaskDescription(e.target.value)}
-            />
-            <TextField
-              label="Gifts and KPI for this task ;)"
-              variant="standard"
-              onChange={(e) => setTaskGift(e.target.value)}
-            />
+            <form onSubmit={handleSubmit}>
+              <Field
+                name="title"
+                type="text"
+                component={renderField}
+                label="Task Title"
+                onChange={(e) => setTaskTitle(e.target.value)}
+              />
+              <Field
+                name="description"
+                type="text"
+                component={renderField}
+                label="Task Description"
+                onChange={(e) => setTaskDescription(e.target.value)}
+              />
+              <Field
+                name="gift"
+                type="text"
+                component={renderField}
+                label="Task Gift"
+                onChange={(e) => setTaskGift(e.target.value)}
+              />
+              <RadioGroup className="add-form-radio">
+                <FormControlLabel
+                  value="low"
+                  control={<Radio {...controlProps("low")} />}
+                  label="LOW"
+                />
+                <FormControlLabel
+                  value="medium"
+                  control={<Radio {...controlProps("medium")} />}
+                  label="MEDIUM"
+                />
+                <FormControlLabel
+                  value="high"
+                  control={<Radio {...controlProps("high")} />}
+                  label="HIGH"
+                />
+              </RadioGroup>
+            </form>
           </div>
-          <RadioGroup className="add-form-radio">
-            <FormControlLabel
-              value="low"
-              control={<Radio {...controlProps("low")} />}
-              label="LOW"
-            />
-            <FormControlLabel
-              value="medium"
-              control={<Radio {...controlProps("medium")} />}
-              label="MEDIUM"
-            />
-            <FormControlLabel
-              value="high"
-              control={<Radio {...controlProps("high")} />}
-              label="HIGH"
-            />
-          </RadioGroup>
+
           <div className="add-form-submit-btn">
-            <Button variant="contained" onClick={() => handleSendTask()}>
+            <Button
+              variant="contained"
+              type="submit"
+              onClick={() => handleSendTask()}
+              disabled={pristine || submitting}
+            >
               Add To Tasks
             </Button>
           </div>
@@ -122,4 +171,7 @@ const mapStateToProps = (state) => {
   return { TodoList: state.ToDoList };
 };
 
-export default connect(mapStateToProps, { fetchtodolist, sendTodo })(AddTodo);
+export default reduxForm({
+  form: "syncValidation",
+  validate,
+})(connect(mapStateToProps, { fetchtodolist, sendTodo })(AddTodo));
