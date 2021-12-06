@@ -2,10 +2,11 @@
 in this project use:\
 1.react\
 2.redux & redux-thunk (for state management)\
-3.localstorage (for crud)\
-4.material ul for css\
-5.sass\
-6.error boundary
+3.redux form\
+4.localstorage (for crud)\
+5.material ul for css\
+6.sass\
+7.error boundary
  
  ## Features :
  add Task\
