@@ -14,4 +14,3 @@ in this project use:\
  delete Task\
  edit Task\
  checked Task when Task done and see list of task is completed
- 
