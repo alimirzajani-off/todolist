@@ -55,7 +55,7 @@ const TodoList = (props) => {
     return props.TodoList.map((item) => {
       if (item.status == false) {
         return (
-          <div key={item.id}>
+          <div>
             <div className="todo-item" onClick={() => setId(item.id)}>
               <TodoDetail
                 id={Id}

@@ -16,7 +16,6 @@ export const SET = (Task) => {
 
 export const DELETE = (Task, index) => {
   return new Promise((resolve, reject) => {
-    console.log(Task, "hi", index);
     if (index > -1) {
       Task.splice(index, 1);
       localStorage.setItem("todolist", JSON.stringify(Task));
