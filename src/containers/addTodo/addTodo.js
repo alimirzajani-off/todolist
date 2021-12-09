@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, reset } from "redux-form";
 import { fetchtodolist, sendTodo } from "../../action";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { Radio, RadioGroup, TextField } from "@mui/material";
+import { FormControlLabel, Radio, RadioGroup, TextField } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
 import "./addTodo.sass";
 
@@ -44,8 +44,8 @@ const renderRadioGroup = ({ input, ...rest }) => (
   />
 );
 
-const onSubmit = (values) => {
-  console.log(values);
+const onSubmit = (values, dispatch) => {
+  dispatch(reset("AddTodo"));
 };
 
 const AddTodo = (props) => {
@@ -63,6 +63,8 @@ const AddTodo = (props) => {
     setTaskList(props.TodoList);
   };
 
+  const { handleSubmit, valid } = props;
+
   const handleSendTask = () => {
     const Task = { ...props.formValue.values };
     Task.status = false;
@@ -72,7 +74,6 @@ const AddTodo = (props) => {
     setOpen(false);
   };
 
-  const { handleSubmit, valid } = props;
   return (
     <div>
       <Button onClick={handleOpen}>{props.btnText}</Button>
@@ -102,10 +103,26 @@ const AddTodo = (props) => {
               type="text"
               component={renderInput}
             />
-            <Field name="level" component={renderRadioGroup}>
-              <Radio value="low" label="Low" />
-              <Radio value="medium" label="Medium" />
-              <Radio value="high" label="High" />
+            <Field
+              name="level"
+              component={renderRadioGroup}
+              className="add-form-radio"
+            >
+              <FormControlLabel
+                value="low"
+                control={<Radio value="low" label="Low" />}
+                label="LOW"
+              />
+              <FormControlLabel
+                value="medium"
+                control={<Radio value="medium" label="Medium" />}
+                label="Medium"
+              />
+              <FormControlLabel
+                value="high"
+                control={<Radio value="high" label="High" />}
+                label="High"
+              />
             </Field>
             <div className="add-form-submit-btn">
               <Button
