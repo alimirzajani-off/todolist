@@ -45,6 +45,7 @@ const renderRadioGroup = ({ input, ...rest }) => (
 );
 
 const onSubmit = (values, dispatch) => {
+  console.log("hi");
   dispatch(reset("AddTodo"));
 };
 
@@ -63,7 +64,7 @@ const AddTodo = (props) => {
     setTaskList(props.TodoList);
   };
 
-  const { handleSubmit, valid } = props;
+  const { handleSubmit, valid, reset } = props;
 
   const handleSendTask = () => {
     const Task = { ...props.formValue.values };
@@ -72,6 +73,7 @@ const AddTodo = (props) => {
     TaskList.push(Task);
     props.sendTodo(TaskList);
     setOpen(false);
+    reset();
   };
 
   return (
@@ -129,7 +131,7 @@ const AddTodo = (props) => {
                 variant="contained"
                 type="submit"
                 disabled={!valid}
-                onClick={(e) => handleSendTask()}
+                onClick={handleSendTask}
               >
                 Add To Tasks
               </Button>
